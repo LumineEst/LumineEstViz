@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Homework 2</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+  <h3>DS-4630 / CS-5630 / CS-6630 Homework 2</h3>
+    <address>
+    <span>Joel Wood | </span>
+    <span>u0499977@umail.utah.edu | </span>
+    <span>u0499977</span>
+  </address>
+  <br>
+
+<div class="row controls">
+  <div class="toolbox">
+    <span>
+      <label>Dataset:</label>
+      <select id="dataset">
+	<option value="China">China</option>
+	<option value="Germany">Germany</option>
+	<option value="United Kingdom">United Kingdom</option>
+	<option selected value="United States">United States</option>
+	</select>
+    </span>
+    <span>
+      <label>Data Metric</label>
+      <select id="metric">
+	<option selected value="Total_Deaths">Total Deaths</option>
+	<option value="Total_Population">Total Population</option>
+	</select>
+    </span>
+  </div>
+  <div id = "tooltip-box">
+	Hover over a chart Element to see its details.
+  </div>
+  </div>
+
+  <div class="row">
+    <div class="chart">
+      <h2>Histogram Charts</h2>
+      <div id="Histogram-div">
+      </div>
+    </div>
+
+    <div class="chart">
+      <h2>Line Charts</h2>
+      <div id="Linechart-div"></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="chart">
+      <h2>Stacked Area Charts</h2>
+      <div id="StackedAreaChart-div"></div>
+    </div>
+
+    <div class="chart">
+      <h2>Scatter Plot</h2>
+      <div id="ScatterPlot-div"></div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
