@@ -1,0 +1,64 @@
+/* style div and headers */
+.chart, 
+h2 {
+    text-align: center;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.controls {
+    justify-content: flex-start;
+    gap: 5px;
+
+svg {
+    padding: 10px;
+    width: 500px;
+    height: 250px;
+}
+
+/* style of tooltip box */
+#tooltip-box {
+    border: 2px solid #ccc;
+    padding: 5px;
+    gap: 5px;
+    background-color: #f9f9f9;
+    min-width: 500px;
+    align-self: flex-start;
+}
+
+/* style of bar charts */
+.bar-chart rect {
+    fill: rgb(79, 175, 211);
+}
+
+.bar-chart .hovered {
+    fill: #979696;
+}
+
+/* style of line charts */
+.line-chart {
+    stroke: rgb(79, 175, 211);
+    stroke-width: 2;
+    fill: none;
+}
+
+text {
+    fill: black;
+}
+
+/* style of area charts */
+.area-chart {
+    fill: rgb(79, 175, 211);
+}
+
+/* style of scatter plot */
+.scatter-plot circle {
+    fill: rgb(79, 175, 211);
+}
+
+.scatter-plot .hovered {
+    fill: #979696;
+}
