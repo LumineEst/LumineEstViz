@@ -1,0 +1,63 @@
+<div id="config-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>System Configuration</h2>
+            <span class="close-modal" id="config-modal-close">&times;</span>
+        </div>
+
+        <div class="modal-tabs">
+            <button class="modal-tab-btn active" onclick="openConfigTab('tab-models')">Models</button>
+            <button class="modal-tab-btn" onclick="openConfigTab('tab-elements')">Elements</button>
+        </div>
+
+        <div class="modal-body">
+            <div id="tab-models" class="config-tab-content active">
+                <p>Define the product variations produced on this line.</p>
+                <div class="config-table-wrapper">
+                    <table class="config-table" id="models-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Ratio (0-1)</th>
+                                <th>Length (ft)</th>
+                                <th>Width (ft)</th>
+                                <th>Height (ft)</th>
+                                <th>Weight (lbs)</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <button class="btn-secondary" style="margin-top: 10px;" onclick="addModelRow()">+ Add Model</button>
+            </div>
+
+            <div id="tab-elements" class="config-tab-content">
+                <p>Define atomic tasks and their precedence. Check boxes for models that use the task.</p>
+                <div class="config-table-wrapper">
+                    <table class="config-table" id="elements-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Description</th>
+                                <th>Time (min)</th>
+                                <th>Predecessors (IDs)</th>
+                                <th id="element-actions-header">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <button class="btn-secondary" style="margin-top: 10px;" onclick="addElementRow()">+ Add Element</button>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-secondary" id="config-modal-cancel">Cancel</button>
+            <button class="btn-primary" onclick="saveAndOptimizeConfig()">Save & Optimize</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factory Flow to Fortune</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <aside id="left-sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h3>Workstations</h3>
+                <button id="left-toggle" class="toggle-btn">&laquo;</button>
+            </div>
+            <div id="workstation-list" class="sidebar-content">
+            </div>
+        </aside>
+
+        <main id="main-content">
+            <header class="main-header">
+                <h1>Factory Flow to Fortune</h1>
+                <nav id="tabs">
+                    <button class="tab-btn" data-tab="overview">Overview</button>  
+                    <button class="tab-btn" data-tab="precedence">Precedence</button>
+                    <button class="tab-btn" data-tab="schedule">Schedule</button>  
+                    <button class="tab-btn" data-tab="efficiency">Efficiency</button>
+                    <button class="tab-btn" data-tab="layout">Layout</button>
+                    <button class="tab-btn" data-tab="profit">Profit</button> 
+                    <button class="tab-btn" data-tab="location">Location</button>
+                    <button class="tab-btn" data-tab="investment">Investment</button> 
+                </nav>
+            </header>
+            <div id="svg-container">
+                <svg id="visualization-svg" width="100%" height="100%">
+                    <g id="overview-panel" class="vis-panel" style="display: none;"></g>
+                    <g id="precedence-panel" class="vis-panel" style="display: none;"></g>
+                    <g id="schedule-panel" class="vis-panel"></g>
+                    <g id="efficiency-panel" class="vis-panel" style="display: none;"></g>
+                    <g id="layout-panel" class="vis-panel" style="display: none;"></g>
+                    <g id="profit-panel" class="vis-panel" style="display: none;"></g>
+                    <g id="location-panel" class="vis-panel" style="display: none;"></g>
+                    <g id="investment-panel" class="vis-panel" style="display: none;"></g>
+                </svg>
+            </div>
+        </main>
+
+        <aside id="right-sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <button id="right-toggle" class="toggle-btn">&raquo;</button>
+                <h3>Controls & Outputs</h3>
+            </div>
+            <div class="sidebar-content">
+                <section class="control-section">
+                    <h4>Operation Inputs</h4>
+                    <div class="input-group">
+                        <label for="dailyDemand"><strong>Daily Demand</strong> (units)</label>
+                        <input type="number" id="dailyDemand" value="180" min="1" max="576">
+                    </div>
+                    <div class="input-group">
+                        <label for="opHours"><strong>Operational Hours</strong></label>
+                        <input type="number" id="opHours" value="17" step="0.25" min="1" max="24">
+                    </div>
+                    <div class="input-group-slider">
+                        <label for="numEmployees"><strong>Employees: <span id="employeeCountDisplay">8</strong></span></label>
+                        <input type="range" id="numEmployees" value="8" min="3" max="13" step="1">
+                    </div>
+                </section>
+                <section class="control-section">
+                    <h4>Financial Inputs</h4>
+                    <div class="input-group">
+                        <label for="laborCost"><strong>Labor Cost</strong> ($/hr)</label>
+                        <input type="number" id="laborCost" value="25.00" step="0.50" min="0">
+                    </div>
+                    <div class="fin-grid">
+                        <span>($/unit)</span><span>Sell<br>Price</span><span>Material Cost</span><span>Rework Cost</span>
+                        <label><strong>Super</strong></label>
+                        <input type="number" id="superSell" value="400" min="1">
+                        <input type="number" id="superCogs" value="375" min="1">
+                        <input type="number" id="superRework" value="350" min="1">
+                        <label><strong>Ultra</strong></label>
+                        <input type="number" id="ultraSell" value="650" min="1">
+                        <input type="number" id="ultraCogs" value="590" min="1">
+                        <input type="number" id="ultraRework" value="500" min="1">
+                        <label><strong>Mega</strong></label>
+                        <input type="number" id="megaSell" value="1000" min="1">
+                        <input type="number" id="megaCogs" value="960" min="1">
+                        <input type="number" id="megaRework" value="650" min="1">
+                    </div>
+                </section>
+                <section class="control-section">
+                    <h4>Quality Inputs</h4>
+                    <div class="input-group">
+                        <label for="qualityYieldInput"><strong>Quality Yield %</strong> <span id="qualityYieldLabel"></span></label>
+                        <input type="number" id="qualityYieldInput" value="100" step="0.1" min="0" max="100">
+                    </div>
+                    <div class="input-group-slider">
+                        <label for="qualityStDevPercentage"><strong>CV: </strong><span id="qualityStDevPercentageDisplay">15.0</span> %</label>
+                        <input type="range" id="qualityStDevPercentage" value="0.15" step="0.001" min="0.01" max="0.30">
+                    </div>
+                </section>
+                <hr>
+                <section class="demandStatus-section" style="margin-top:1.5rem;">
+                    <div id="demandStatus" class="status"></div>
+                </section>
+                <section class="output-section">
+                    <h4>Key Metrics</h4>
+                    <div class="output-grid">
+                        <span>WIP:</span><strong id="wip">0 units</strong>
+                        <span>Throughput:</span><strong id="throughput">0/hr</strong>
+                        <span>Conveyor Speed:</span><strong id="conveyorSpeed">0 ft/min</strong>
+                        <span>Product Spacing:</span><strong id="productSpacing">0 ft</strong>
+                        <span>Quality Yield:</span><strong id="qualityYield">100%</strong>
+                    </div>
+                </section>
+                <section class="output-section">
+                    <h4>Efficiency Metrics</h4>
+                    <div class="output-grid">
+                        <span>Avg. Efficiency:</span><strong id="avgEfficiency">0%</strong>
+                        <span>Total Idle Time:</span><strong id="totalIdleTime">0 hrs</strong>
+                        <span>Balance Delay:</span><strong id="balanceDelay">0%</strong>
+                        <span>Idle Time CV:</span><strong id="idleTimeCv">0%</strong>
+                    </div>
+                </section>
+                <section class="output-section">
+                    <h4>Financial Metrics</h4>
+                    <div class="output-grid">
+                        <span>CoPQ:</span><strong id="copq">$0</strong>
+                        <span>Gross Profit:</span><strong id="grossProfit">$0</strong>
+                        <span>Profit Margin:</span><strong id="profitMargin">0%</strong>
+
+                        <span class="inv-metric">Net Present Value (NPV):</span><strong id="npvMetric" class="inv-metric">$0</strong>
+                        <span class="inv-metric">Internal Rate of Return (IRR):</span><strong id="irrMetric" class="inv-metric">—</strong>
+                        <span class="inv-metric">Payback Period:</span><strong id="paybackMetric" class="inv-metric">—</strong>
+                    </div>
+                </section>
+                <section class="control-section">
+                    <h4>Save & Compare</h4>
+                    <button id="saveConfigBtn">Save configuration</button>
+                    <button id="compareBtn" class="current" disabled>Current Configuration</button>
+                </section>
+            </div>
+        </aside>
+    </div>
+    <script src="Tabs/Location.js"></script>
+    <script src="Tabs/Layout.js"></script> 
+    <script src="Tabs/Schedule.js"></script> 
+    <script src="Tabs/Profit.js"></script>
+    <script src="Tabs/Efficiency.js"></script>
+    <script src="Tabs/Precedence.js"></script> 
+    <script src="Tabs/Investment.js"></script>
+    <script src="QualityYield.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

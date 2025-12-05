@@ -1,0 +1,3220 @@
+:root {
+    --page-bg: #f6FFFF;
+    /* page background color */
+    --primary: #009688;
+    --secondary1: #FAB73B;
+    --secondary2: #7E57C2;
+    --accent: #37474F;
+    --super-color: #8ac9f3;
+    --ultra-color: #f3de8a;
+    --mega-color: #e98f85;
+    --idle-color: #e5e7e9;
+    --white: var(--page-bg);
+    /* keep references using --white but point to page background */
+    --header-bg: var(--accent);
+    --text-color: var(--accent);
+    --accent-color: var(--secondary1);
+    --success-color: var(--primary);
+    --failure-color: #FF00FF;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    --element-time-bg: var(--secondary2);
+    --tooltip-bg: var(--accent);
+}
+
+html {
+    font-size: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes blink-red-border {
+    50% {
+        border-color: #ff9a9a;
+    }
+}
+
+@keyframes precedence-pulse {
+    0% {
+        stroke: var(--failure-color);
+        stroke-width: 6px;
+        opacity: 0.9;
+    }
+    50% {
+        stroke: #ff9a9a;
+        stroke-width: 3.5px;
+        opacity: 0.7;
+    }
+    100% {
+        stroke: var(--failure-color);
+        stroke-width: 6px;
+        opacity: 0.9;
+    }
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--white);
+    color: var(--text-color);
+    height: 100vh;
+    overflow: hidden;
+}
+
+.app-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Video Container Styling */
+.video-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+/* The Video Player Itself */
+.video-container video {
+    width: 100%;
+    max-width: 800px; /* Prevents it from getting too huge on large screens */
+    height: auto;
+    display: block;
+    object-fit: contain;
+    border-radius: 8px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+    background-color: #000;
+}
+
+.video-container Video:-webkit-full-screen,
+.video-container video:-moz-full-screen,
+.video-container video:-ms-fullscreen {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: contain !important;
+    background-color: #000 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+}
+
+.sidebar {
+    width: clamp(280px, 15vw, 400px);
+    background-color: var(--white);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s ease;
+    z-index: 10;
+    position: relative;
+}
+
+.sidebar.collapsed {
+    width: 0;
+    box-shadow: none;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background-color: var(--header-bg);
+    color: var(--white);
+    flex-shrink: 0;
+    position: relative;
+    height: 58px;
+}
+
+#right-sidebar .sidebar-header {
+    justify-content: flex-end;
+}
+
+.sidebar-header h3 {
+    font-size: 1.1rem;
+    white-space: nowrap;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-content {
+    padding: 1rem;
+    overflow-y: auto;
+    flex-grow: 1;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar.collapsed .sidebar-header h3,
+.sidebar.collapsed .sidebar-content {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.toggle-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: 1px solid transparent;
+    color: var(--white);
+    font-size: 1.8rem;
+    cursor: pointer;
+    z-index: 20;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+#left-sidebar .toggle-btn {
+    right: 1rem;
+}
+
+#right-sidebar .toggle-btn {
+    left: 1rem;
+}
+
+.sidebar.collapsed .toggle-btn {
+    background-color: var(--header-bg);
+    width: 25px;
+    height: 60px;
+    top: 60px;
+    transform: none;
+    color: white;
+}
+
+#left-sidebar.collapsed .toggle-btn {
+    right: 4px;
+    border-radius: 0 8px 8px 0;
+}
+
+#right-sidebar.collapsed .toggle-btn {
+    left: -29px;
+    border-radius: 8px 0 0 8px;
+}
+
+.inv-metric {
+    display: none
+}
+
+
+#main-content {
+    background-color: var(--page-bg);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-header {
+    background-color: var(--header-bg);
+    padding: 0 1rem;
+    box-shadow: var(--shadow);
+    z-index: 5;
+}
+
+.main-header h1 {
+    font-size: 1.5rem;
+    text-align: center;
+    padding: 0.5rem 0;
+    color: var(--white);
+}
+
+#tabs {
+    display: flex;
+    justify-content: center;
+    color: var(--white);
+}
+
+.tab-btn {
+    padding: 0.9rem 1.6rem;
+    color: var(--idle-color);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 0.8rem 0.8rem 0 0;
+    margin-right: 0.25rem;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+    opacity: 0.75;
+    transition: opacity 0.2s ease, transform 0.1s ease;
+    text-shadow: 3px 3px 5px var(--accent);
+}
+
+.tab-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    opacity: 1;
+}
+
+.tab-btn.active {
+    color: var(--light-text);
+    transform: translateY(-0.25rem);
+    opacity: 1.0;
+    border-bottom-width: 0.25rem;
+    margin-bottom: -0.2rem;
+}
+
+.tab-btn[data-tab="overview"],
+.tab-btn[data-tab="precedence"] {
+    background-color: var(--secondary1);
+}
+
+.tab-btn.active[data-tab="overview"],
+.tab-btn.active[data-tab="precedence"] {
+    border-bottom-color: var(--primary);
+}
+
+.tab-btn[data-tab="schedule"],
+.tab-btn[data-tab="efficiency"],
+.tab-btn[data-tab="layout"] {
+    background-color: var(--primary);
+}
+
+.tab-btn.active[data-tab="schedule"],
+.tab-btn.active[data-tab="efficiency"],
+.tab-btn.active[data-tab="layout"] {
+    border-bottom-color: var(--secondary2);
+}
+
+.tab-btn[data-tab="profit"],
+.tab-btn[data-tab="investment"],
+.tab-btn[data-tab="location"] {
+    background-color: var(--secondary2);
+}
+
+.tab-btn.active[data-tab="profit"],
+.tab-btn.active[data-tab="investment"],
+.tab-btn.active[data-tab="location"] {
+    border-bottom-color: var(--secondary1);
+}
+
+#svg-container {
+    flex-grow: 1;
+    background-color: var(--page-bg);
+    margin: 1rem;
+    border-radius: 8px;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.workstation {
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.workstation-title {
+    font-weight: bold;
+    margin-bottom: 0.1rem;
+    padding-bottom: 0.5rem;
+    text-align: right;
+}
+
+.workstation-list {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.element-row {
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+}
+
+.element-bar-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.element-time-bar {
+    /* Refactored from script.js: uses --accent for bg/border and 4px radius */
+    background-color: var(--accent);
+    border: 2px solid var(--accent);
+    height: 18px;
+    border-radius: 4px;
+    min-width: 1px;
+    position: relative;
+    color: var(--white);
+    text-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    padding: 0 3px;
+}
+
+.labor-time-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    transform-origin: right;
+    background-color: var(--white);
+    border-radius: 3px;
+    z-index: 5;
+}
+
+.labor-bar-text {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    color: var(--white);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.control-section,
+.output-section {
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+}
+
+h4 {
+    margin-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    color: var(--secondary2);
+}
+
+.control-section h4,
+.output-section h4 {
+    margin-bottom: 0.3rem;
+    font-size: 1.1rem;
+}
+
+.input-group {
+    margin-bottom: 0.3rem;
+    display: grid;
+    grid-template-columns: 1fr 0.5fr;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.input-group-slider {
+    margin-bottom: 0.5rem;
+    display: grid;
+    grid-template-columns: 0.45fr 0.55fr;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.input-group label,
+.input-group-slider label {
+    display: inline;
+    font-size: 0.9rem;
+    margin-right: 0.4rem;
+    opacity: 0.9;
+}
+
+input[type="number"],
+input[type="range"] {
+    width: 100%;
+    text-align: right;
+    font-size: 0.9rem;
+    color: var(--accent);
+    padding: 0.2rem;
+    margin-top: 0.3rem;
+    margin-bottom: 0.2rem;
+    border-radius: 4px;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    height: 1.5rem;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    background: rgba(0, 0, 0, 0.25);
+    height: 0.4rem;
+    border-radius: 10px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: -6px;
+    background-color: var(--secondary2);
+    height: 1rem;
+    width: 1rem;
+    border-radius: 50%;
+    border-color:rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.fin-grid {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 1fr 1fr;
+    gap: 3px;
+    align-items: center;
+}
+
+.fin-grid span {
+    font-weight: bold;
+    font-size: 0.9rem;
+    opacity: 0.9;
+    text-align: center;
+}
+
+.output-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem 1rem;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.output-grid > *:nth-child(even) {
+    text-align: right;
+    font-weight: bold;
+}
+
+.status {
+    padding: 0.75rem;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.status.success {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.status.failure {
+    background-color: var(--failure-color);
+    color: white;
+}
+
+.element-row.precedence-error .element-time-bar {
+    border: 3px solid var(--failure-color);
+    border-radius: 5px;
+    padding: 2px;
+    margin-bottom: 4px;
+    animation: blink-red-border 1.2s ease-in-out infinite;
+}
+
+/* =========================================
+   Configuration Modal Styles
+   ========================================= */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(2px);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 85%;
+    max-width: 1000px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+}
+
+.modal-header {
+    padding: 15px 20px;
+    background-color: var(--primary);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px 8px 0 0;
+}
+
+    .modal-header h2 {
+        margin: 0;
+        font-size: 1.2rem;
+    }
+
+.close-modal {
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+    .close-modal:hover {
+        color: #ddd;
+    }
+
+.modal-tabs {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    background-color: #f1f1f1;
+}
+
+.modal-tab-btn {
+    background-color: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 20px;
+    transition: 0.3s;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #555;
+}
+
+    .modal-tab-btn:hover {
+        background-color: #ddd;
+    }
+
+    .modal-tab-btn.active {
+        background-color: #fff;
+        border-bottom: 3px solid var(--accent);
+        color: var(--accent);
+    }
+
+.modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.config-tab-content {
+    display: none;
+}
+
+    .config-tab-content.active {
+        display: block;
+    }
+
+/* Dynamic Table Styles */
+.config-table-wrapper {
+    max-height: 500px;
+    overflow: auto;
+    border: 1px solid #ddd;
+}
+
+.config-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+    .config-table th, .config-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .config-table th {
+        background-color: var(--accent);
+        color: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .config-table input[type="text"], .config-table input[type="number"] {
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid transparent;
+        padding: 4px;
+        background: transparent;
+    }
+
+    .config-table input:focus {
+        border: 1px solid var(--accent);
+        background: white;
+    }
+
+.modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    background-color: #f9f9f9;
+    border-radius: 0 0 8px 8px;
+}
+
+.btn-primary {
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-secondary {
+    background-color: #ccc;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary);
+}
+
+.overview-container {
+    padding: 0.75rem;
+    width: 100%;
+    line-height: 1.5;
+    color: var(--text-color);
+    overflow-y: auto;
+    max-height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--bg-color);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0.75rem;
+    align-content: start;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    /* Responsive base font size */
+}
+
+.overview-container h2 {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--header-bg);
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid var(--accent-color);
+    width: 100%;
+    font-size: clamp(1.3rem, 2.5vw, 1.6rem);
+    /* Responsive H2 */
+}
+
+.overview-section {
+    background: var(--sidebar-bg);
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: var(--shadow);
+    transition: all 0.2s ease;
+    min-height: 130px;
+    display: flex;
+    flex-direction: column;
+}
+
+.overview-section:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+}
+
+.overview-intro {
+    grid-column: 1 / -1;
+    margin-bottom: 1rem;
+}
+
+.overview-section h3 {
+    color: var(--header-bg);
+    margin-bottom: 0.6rem;
+    font-weight: bold;
+    padding-bottom: 0.4rem;
+    position: relative;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    /* Responsive H3 */
+}
+
+.overview-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 30px;
+    height: 2px;
+    background-color: var(--accent-color);
+}
+
+.overview-section p,
+.overview-section ul li,
+.step-content,
+.tip-content {
+    font-size: clamp(0.75rem, 1.4vw, 0.95rem);
+    /* Responsive paragraph/list text */
+}
+
+.overview-section p {
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.overview-section ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0.5rem;
+    flex-grow: 1;
+}
+
+.overview-section ul li {
+    margin: 0.3rem 0;
+    padding: 0.25rem 0.5rem 0.25rem 1.2rem;
+    position: relative;
+    line-height: 1.3;
+    border-left: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.overview-section ul li::before {
+    content: "•";
+    color: var(--accent-color);
+    position: absolute;
+    left: 0.3rem;
+    top: 45%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+.overview-section ul li strong {
+    color: var(--header-bg);
+    font-weight: 600;
+}
+
+.overview-desc {
+    text-align: center;
+    color: #555;
+    font-style: italic;
+    margin-bottom: 0.5rem;
+    padding: 0.75rem;
+    background: rgba(52, 152, 219, 0.05);
+    border-left: 3px solid var(--accent-color);
+    border-radius: 4px;
+}
+
+.overview-section ul li:hover {
+    background-color: rgba(52, 152, 219, 0.08);
+    border-left-color: var(--accent-color);
+    transform: translateX(0.2rem);
+}
+
+.step-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+}
+
+.step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 0.5rem;
+    background: rgba(46, 204, 113, 0.05);
+    border-radius: 4px;
+    border-left: 3px solid var(--success-color);
+}
+
+.step-number {
+    background: var(--success-color);
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.step-content strong {
+    color: var(--header-bg);
+}
+
+.tips-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.22rem;
+    margin-top: 0.32rem;
+}
+
+.tip-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.42rem;
+    padding: 0.32rem;
+    background: rgba(155, 89, 182, 0.05);
+    border-radius: 4px;
+    border-left: 3px solid #9b59b6;
+}
+
+.tip-icon {
+    font-size: 0.82rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.tip-content strong {
+    color: var(--header-bg);
+}
+
+.tech-doc-link {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary);
+    color: var(--white);
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.tech-doc-link:hover {
+    background-color: var(--secondary1);
+    transform: translateY(-2px);
+}
+
+
+@media (max-width: 1200px) {
+    .overview-container {
+        grid-template-columns: 1fr;
+        padding: 0.75rem;
+    }
+}
+
+/* ============================================= */
+/* == Tooltip and Visualization Styles        == */
+/* ============================================= */
+
+/* CSS-only Tooltip for Key Terms */
+[data-tooltip] {
+    position: relative;
+    cursor: help;
+    border-bottom: 1px dotted var(--accent);
+}
+
+[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    background-color: var(--tooltip-bg);
+    color: var(--white);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 100;
+    font-weight: normal;
+    /* Tooltip text should not be bold */
+}
+
+[data-tooltip]:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-12px);
+}
+
+
+/* General D3 Tooltip Styles */
+.d3-tooltip {
+    position: absolute;
+    z-index: 9999;
+    pointer-events: none;
+    padding: 8px 12px;
+    background: var(--tooltip-bg);
+    color: var(--white);
+    border-radius: 8px;
+    font: 12px/1.4 sans-serif;
+    box-shadow: 0 4px 12px var(--shadow);
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    text-align: left;
+    border: 0px;
+}
+
+.d3-tooltip .tooltip-header {
+    font-weight: 800;
+    font-size: 13px;
+    margin: 0 0 6px 0;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.d3-tooltip .tooltip-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.d3-tooltip .tooltip-key {
+    opacity: .85;
+}
+
+.vis-panel .axis text {
+    font-size: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 500;
+    fill: #2d3748;
+}
+
+.vis-panel .axis path,
+.vis-panel .axis line {
+    stroke: var(--accent);
+}
+
+.vis-panel .grid-major line {
+    stroke: var(--idle-color);
+    stroke-width: 0.75px;
+}
+
+.vis-panel .grid-minor line {
+    stroke: var(--accent);
+    stroke-dasharray: 2, 2;
+}
+
+.vis-panel .grid-major path,
+.vis-panel .grid-minor path {
+    display: none;
+}
+
+.crosshair {
+    stroke: var(--accent);
+    stroke-dasharray: 4 4;
+}
+
+.crosshair-h {
+    stroke: var(--accent);
+    stroke-dasharray: 4 4;
+    opacity: .6;
+}
+
+.line-profit {
+    stroke: var(--primary);
+}
+
+.line-margin {
+    stroke: var(--secondary2);
+}
+
+.lost-profit-area {
+    fill: var(--failure-color);
+    opacity: .4;
+}
+
+.point-now {
+    fill: var(--failure-color);
+    stroke: var(--white);
+    stroke-width: 2;
+}
+
+.breakdown-border {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2;
+    stroke-dasharray: 6 6;
+}
+
+.pie-title {
+    font-size: 13px;
+    font-weight: 800;
+    text-anchor: middle;
+    fill: var(--accent);
+}
+
+.vis-panel .axis-label {
+    font-size: 14px;
+    font-weight: 600;
+    fill: var(--accent);
+}
+
+/* --- Modern Toggle Switch Styles --- */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: clamp(44px, 3.5vw, 55px);
+    height: clamp(24px, 1.9vw, 30px);
+    flex-shrink: 0;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--secondary2);
+    transition: .4s;
+    border-radius: 100px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    --handle-size: 70%;
+    width: calc(0.8*clamp(24px, 1.9vw, 30px));
+    height: calc(0.8*clamp(24px, 1.9vw, 30px));
+    left: 10%;
+    top: 50%;
+    transform: translateY(-50%);
+
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked+.slider {
+    background-color: var(--success-color);
+}
+
+input:checked+.slider:before {
+    transform: translate(80%, -50%);
+}
+
+/* Legend Styles for Standardization */
+.legend-box {
+    fill: var(--white);
+    stroke: var(--accent);
+    stroke-width: 1;
+}
+
+.legend-title {
+    font-weight: bold;
+    font-size: 16px;
+    fill: var(--accent);
+    text-anchor: middle;
+}
+
+.legend-item-text {
+    font-size: 12px;
+    fill: var(--accent);
+}
+
+/* Makes the new label interactive for the tooltip */
+#qualityYieldLabel {
+    cursor: help;
+    border-bottom: 1px dotted var(--accent);
+    display: inline-block; /* Makes border-bottom fit the text */
+}
+
+/* Styles for the new breakdown tooltip */
+.quality-breakdown-tooltip .tt-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.quality-breakdown-tooltip .tooltip-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+    .quality-breakdown-tooltip .tooltip-row span:first-child {
+        opacity: 0.8;
+    }
+
+    .quality-breakdown-tooltip .tooltip-row span:last-child {
+        font-weight: bold;
+        color: var(--failure-color); /* Shows quality loss as red */
+    }
+
+.quality-breakdown-tooltip .tt-total span:last-child {
+    color: var(--white); /* Reverts the total yield color to white */
+}
+
+.quality-breakdown-tooltip hr {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    margin: 4px 0;
+}
+
+/* ============================================= */
+/* == Custom Scrollbars (from script.js)     == */
+/* ============================================= */
+
+/* Target sidebars and SVG area for Firefox */
+#left-sidebar,
+#right-sidebar,
+#svg-container {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+}
+
+/* Target sidebars and SVG area for Webkit browsers (Chrome, Safari, etc.) */
+#left-sidebar::-webkit-scrollbar,
+#right-sidebar::-webkit-scrollbar,
+#svg-container::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+#left-sidebar::-webkit-scrollbar-track,
+#right-sidebar::-webkit-scrollbar-track,
+#svg-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#left-sidebar::-webkit-scrollbar-thumb,
+#right-sidebar::-webkit-scrollbar-thumb,
+#svg-container::-webkit-scrollbar-thumb {
+    background-color: var(--accent);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+#left-sidebar::-webkit-scrollbar-thumb:hover,
+#right-sidebar::-webkit-scrollbar-thumb:hover,
+#svg-container::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary);
+}
+
+/* ============================================= */
+/* == D3 Tooltip Overrides (from script.js)   == */
+/* ============================================= */
+
+.d3-tooltip.pert-tooltip {
+    position: fixed;
+}
+
+.d3-tooltip.workstation-tooltip {
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* ============================================= */
+/* == Overview Tab (from script.js)           == */
+/* ============================================= */
+
+.overview-error-message {
+    padding: 2rem;
+    text-align: center;
+}
+
+/* ============================================= */
+/* == Simulation Controls (from script.js)    == */
+/* ============================================= */
+/* Used for Play/Pause/Reset buttons on Layout/Schedule tabs */
+
+.sim-control-btn {
+    cursor: pointer;
+}
+
+.sim-control-btn rect {
+    fill: var(--accent);
+    /* `rx` was removed as it's an SVG attribute */
+}
+
+.sim-control-btn text {
+    text-anchor: middle;
+    fill: var(--secondary1);
+    font-size: 14px;
+}
+
+/* ============================================= */
+/* == Precedence Tab (from Precedence.js)     == */
+/* ============================================= */
+
+
+/* --- PERT Node Components --- */
+/* The invisible circle used for hit detection and dragging */
+.pert-node-hitbox {
+    fill: transparent;
+    pointer-events: all;
+}
+
+/* The pie chart slices */
+.__pert_pie {
+    stroke: var(--white);
+    stroke-width: 0.9px;
+}
+
+/* The background circle behind the node ID text */
+.__pert_label_bg {
+    pointer-events: none;
+    fill: var(--white);
+    /* --white is an alias for --page-bg */
+    fill-opacity: 0.95;
+    stroke: var(--accent);
+    stroke-opacity: 0.2;
+    stroke-width: 1;
+}
+
+/* The text (ID) for each node */
+#precedence-panel .precedence-node-text {
+    text-anchor: middle;
+    font-family: sans-serif;
+    font-weight: 800;
+    fill: var(--accent);
+    stroke: var(--white);
+    stroke-width: 4px;
+    paint-order: stroke;
+    pointer-events: none;
+}
+
+/* --- Build Ratios Legend --- */
+#precedence-legend {
+    pointer-events: none;
+}
+
+#precedence-legend g>text[text-anchor="middle"] {
+    text-anchor: middle;
+    font-size: 12px;
+    fill: var(--accent);
+}
+
+/* --- Task Flow (DAG) Legend Components --- */
+/* The arrow from A to B */
+.dag-legend-arrow {
+    stroke: var(--accent);
+    stroke-width: 2px;
+    marker-end: url(#arrowhead);
+}
+
+/* The "A" and "B" text inside the legend nodes */
+#precedence-panel .dag-legend-node-text {
+    text-anchor: middle;
+    /* `dy` was removed as it's an SVG attribute */
+    fill: var(--accent);
+    font-weight: bold;
+    font-size: 12px;
+}
+
+/* The "K&W Diagram" switch text */
+#precedence-panel .dag-legend-switch-text {
+    font-size: 14px;
+    font-weight: bold;
+    fill: var(--accent);
+}
+
+/* The grey track for the toggle switch */
+#precedence-panel .dag-legend-switch-rect {
+    fill: #ccc;
+}
+
+/* The white handle for the toggle switch */
+#precedence-panel .dag-legend-switch-handle {
+    fill: white;
+}
+
+/* --- New Keyframe for Bottleneck Pie/Summary Stroke --- */
+@keyframes blink-stroke {
+
+    0%,
+    100% {
+        stroke: var(--accent);
+        /* Normal stroke color */
+        stroke-width: 1.5px;
+    }
+
+    50% {
+        stroke: var(--failure-color);
+        /* Blinking color */
+        stroke-width: 3.5px;
+    }
+}
+
+/* --- New Keyframe for Over-Idle Clock Face --- */
+@keyframes blink-face {
+
+    0%,
+    100% {
+        stroke: var(--idle-color);
+        /* Clock face normal stroke */
+        stroke-width: 2px;
+    }
+
+    50% {
+        stroke: var(--failure-color);
+        /* Blinking color */
+        stroke-width: 3.5px;
+    }
+}
+
+/* --- Dedicated Classes for Blinking Elements --- */
+.bottleneck-pie-blink {
+    animation: blink-stroke 1.4s ease-in-out infinite;
+}
+
+.over-idle-clock-blink {
+    animation: blink-face 1.4s ease-in-out infinite;
+}
+
+.sim-loading-text {
+    color: var(--accent);
+    font-weight: bold;
+    margin: 0;
+    padding: 2px 0;
+}
+
+.sim-placeholder-text {
+    margin: 0;
+    padding: 2px 0;
+}
+
+.sim-error-text {
+    color: var(--failure-color);
+    font-weight: bold;
+}
+
+.overlay {
+    fill: none;
+    pointer-events: all;
+}
+
+.chart-error-message {
+    color: var(--failure-color);
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    padding: 10px;
+    border: 2px solid var(--failure-color);
+    background-color: rgba(255, 200, 200, 0.95);
+    max-height: 100%;
+    overflow-y: auto;
+}
+
+/* ============================================= */
+/* == Efficiency Tab (from Efficiency.js)     == */
+/* ============================================= */
+
+/* --- Workstation Elements --- */
+.ws-heading {
+    text-anchor: middle;
+    font-weight: bold;
+    fill: var(--accent);
+}
+
+.slice {
+    stroke: var(--accent);
+    stroke-width: 1.5px;
+}
+
+.pie-text-bg {
+    fill: var(--white);
+    stroke: var(--accent);
+    stroke-width: 1.5px;
+}
+
+.pie-text {
+    text-anchor: middle;
+    font-weight: bold;
+    fill: var(--accent);
+}
+
+/* --- Clock Elements --- */
+.clock-face {
+    fill: var(--accent);
+    stroke: var(--idle-color);
+}
+
+.clock-tick {
+    stroke: var(--idle-color);
+}
+
+.clock-center-pin {
+    fill: var(--idle-color);
+}
+
+.clock-hand {
+    stroke: var(--secondary1);
+    stroke-linecap: round;
+}
+
+.clock-idle-text {
+    text-anchor: middle;
+    font-weight: bold;
+    fill: var(--accent);
+}
+
+/* --- Summary Panel Elements --- */
+.summary-border {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2px;
+    stroke-dasharray: 5, 5;
+}
+
+.summary-pie-slice {
+    stroke: var(--accent);
+    stroke-width: 1.5px;
+}
+
+.summary-pie-text-bg {
+    fill: var(--white);
+    stroke: var(--accent);
+    stroke-width: 1.5px;
+}
+
+.summary-pie-text {
+    text-anchor: middle;
+    font-weight: bold;
+    fill: var(--accent);
+}
+
+/* --- Summary Stats & Charts --- */
+.efficiency-tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--tooltip-bg);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.box-plot-center-line {
+    stroke: var(--accent);
+    stroke-width: 3px;
+}
+
+.box-plot-whisker {
+    stroke: var(--accent);
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.box-plot-box {
+    stroke: var(--accent);
+    stroke-width: 4px;
+    fill: url(#box-gradient);
+}
+
+.box-plot-median-line {
+    stroke: var(--secondary1);
+    stroke-width: 5px;
+    stroke-linecap: round;
+}
+
+.box-plot-tooltip-receiver {
+    fill: transparent;
+}
+
+.bar-chart-axis .domain {
+    stroke: var(--accent);
+}
+
+.bar-chart-axis .tick line {
+    stroke: var(--accent);
+}
+
+.bar-chart-axis .tick text {
+    fill: var(--accent);
+    font-weight: 600;
+}
+
+.bar-chart-bar {
+    fill: url(#box-gradient);
+    stroke: var(--accent);
+    stroke-width: 1.8px;
+}
+
+.summary-title {
+    text-anchor: middle;
+    font-weight: bold;
+    fill: var(--accent);
+}
+
+.summary-label {
+    text-anchor: middle;
+    font-weight: bold;
+    fill: var(--accent);
+}
+
+.summary-value {
+    text-anchor: middle;
+    font-weight: bold;
+    fill: var(--failure-color);
+}
+
+/* ============================================= */
+/* == Layout Tab (from Layout.js)             == */
+/* ============================================= */
+
+/* --- General Layout Elements --- */
+.layout-invalid-text {
+    text-anchor: middle;
+    fill: var(--failure-color);
+}
+
+.layout-no-data-text {
+    text-anchor: middle;
+    fill: var(--accent);
+}
+
+/* --- Clock Elements --- */
+.layout-clock-face {
+    fill: var(--accent);
+    stroke: var(--idle-color);
+    stroke-width: 2px;
+}
+
+.layout-clock-tick {
+    stroke: var(--idle-color);
+}
+
+.layout-clock-hand {
+    stroke: var(--secondary1);
+    stroke-linecap: round;
+}
+
+.layout-clock-hour-hand {
+    stroke-width: 4px;
+}
+
+.layout-clock-minute-hand {
+    stroke-width: 2px;
+}
+
+.layout-clock-center-pin {
+    fill: var(--idle-color);
+}
+
+/* --- Speed Slider Elements --- */
+.layout-speed-slider-track {
+    stroke: var(--accent);
+    stroke-width: 4px;
+    stroke-linecap: round;
+}
+
+.layout-speed-slider-handle {
+    fill: var(--secondary1);
+    stroke: var(--white);
+    stroke-width: 2px;
+}
+
+.layout-speed-slider-interaction {
+    fill: transparent;
+    cursor: grab;
+    touch-action: none;
+}
+
+.layout-speed-slider-label {
+    text-anchor: middle;
+    font-size: 0.7rem;
+    fill: var(--accent);
+}
+
+/* --- Animation Control Buttons --- */
+/* Uses .sim-control-btn from Efficiency tab refactor for consistency */
+.layout-play-pause-btn,
+.layout-reset-btn,
+.layout-skip-btn {
+    cursor: pointer;
+}
+
+.layout-play-pause-btn text,
+.layout-reset-btn text,
+.layout-skip-btn text {
+    text-anchor: middle;
+    fill: var(--white);
+}
+
+.layout-play-pause-btn text {
+    font-size: 14px;
+}
+
+.layout-reset-btn text,
+.layout-skip-btn text {
+    font-size: 13px;
+}
+
+.layout-speedo-tick-label {
+    text-anchor: middle;
+    font-size: 12px;
+    font-weight: 700;
+    fill: var(--accent);
+}
+
+.layout-speedo-needle {
+    stroke: var(--accent);
+    stroke-width: 4px;
+    stroke-linecap: round;
+}
+
+.layout-speedo-center-pin {
+    fill: var(--accent);
+    stroke: var(--white);
+    stroke-width: 2px;
+}
+
+.layout-speedo-readout {
+    text-anchor: middle;
+    font-weight: bold;
+    fill: var(--accent);
+}
+
+.layout-speedo-units {
+    text-anchor: middle;
+    fill: var(--accent);
+}
+
+/* --- Finished Goods Bin --- */
+.layout-bin-rect {
+    fill: var(--idle-color);
+    stroke: var(--accent);
+    stroke-width: 1px;
+}
+
+.layout-bin-title {
+    text-anchor: middle;
+    font-size: 14px;
+    font-weight: bold;
+    fill: var(--accent);
+}
+
+/* --- Legend --- */
+/* Uses .legend-box, .legend-title, .legend-item-text from shared styles */
+.layout-legend-grid-square {
+    fill: var(--white);
+    stroke: var(--accent);
+}
+
+/* --- Background Grid --- */
+.layout-grid-line {
+    stroke: var(--accent);
+    stroke-width: 0.2px;
+    opacity: 0.1;
+}
+
+.layout-element-hover-path {
+    stroke: transparent;
+    stroke-width: 4px;
+    /* Wider hover area */
+    pointer-events: stroke;
+    stroke-linejoin: round;
+}
+
+.layout-element-accent-border {
+    stroke: var(--accent);
+    stroke-width: 2.25px;
+    pointer-events: none;
+    stroke-linejoin: round;
+}
+
+.layout-element-color-path {
+    /* stroke is dynamic */
+    stroke-width: 1.75px;
+    pointer-events: none;
+    stroke-linejoin: round;
+}
+
+.layout-workstation-border {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 0.3px;
+    opacity: 0.6;
+    stroke-linejoin: round;
+}
+
+/* --- Product Shapes --- */
+.layout-product-shape {
+    /* fill is dynamic based on model */
+    /* stroke is dynamic based on model */
+    stroke-width: 0.2px;
+    pointer-events: none;
+}
+
+/* ============================================= */
+/* == Profit Tab Styles                       == */
+/* ============================================= */
+
+.profit-line-profit {
+    /* Optimal profit line */
+    stroke: var(--primary);
+    fill: none;
+    stroke-width: 2.6px;
+}
+
+.profit-line-margin {
+    /* Optimal margin line */
+    stroke: var(--secondary2);
+    fill: none;
+    stroke-width: 2.6px;
+}
+
+.profit-connector-line {
+    /* Line connecting optimal to current point */
+    stroke: var(--accent);
+    stroke-width: 1.5px;
+}
+
+@keyframes blink-failure-stroke {
+    0%, 100% {
+        stroke: var(--failure-color);
+        stroke-width: 5px;
+        stroke-opacity: 1;
+    } 50% {
+        stroke: #ff9a9a;
+        stroke-width: 2px;
+        stroke-opacity: 0.4;
+    }
+}
+
+.profit-pie-border.blinking-failure {
+    animation: blink-failure-stroke 1.5s ease-in-out infinite;
+}
+
+.profit-pie-border {
+    fill: none;
+    pointer-events: none;
+}
+
+.profit-pie-slice {
+    /* Pie chart slices */
+    stroke: var(--accent);
+    stroke-width: 0.125rem;
+}
+
+.profit-bar-baseline {
+    /* Zero line on bar chart */
+    stroke: var(--accent);
+    stroke-width: 1.5px;
+    stroke-dasharray: 3, 3;
+}
+
+.profit-bar {
+    /* Bars in the bottom chart */
+    stroke: var(--accent);
+    stroke-width: 1.5px;
+    /* fill, rx handled by JS */
+}
+
+/* ============================================= */
+/* == INVESTMENT Tab (from investment.js)         == */
+/* ============================================= */
+
+#investment-panel .inv-container {
+    display: flex;
+    height: 100%;
+    font-family: sans-serif;
+    background: var(--white);
+}
+
+#investment-panel .inv-input-column {
+    flex: 0 0 320px;
+    padding: 15px;
+    background: var(--white);
+    border-right: 1px solid #ddd;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+#investment-panel .inv-results-column {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+#investment-panel .inv-column-title {
+    text-align: center;
+    margin: 0 0 15px 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--secondary2);
+    color: var(--accent);
+    font-size: clamp(16px, 1.2vw, 18px);
+    /* Dynamic Font */
+}
+
+#investment-panel .inv-inputs {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#investment-panel .inv-input-group {
+    border: 1px solid var(--idle-color);
+    border-radius: 6px;
+    padding: 12px;
+    background: var(--white);
+}
+
+#investment-panel .inv-group-header {
+    font-weight: bold;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--idle-color);
+    padding-bottom: 4px;
+    color: var(--accent);
+    font-size: clamp(13px, 1vw, 15px);
+    /* Dynamic Font */
+}
+
+#investment-panel .inv-group-subheader {
+    font-weight: normal;
+    color: var(--idle-color);
+    margin-top: 2px;
+    font-size: clamp(10px, 0.7vw, 11px);
+    /* Dynamic Font */
+}
+
+/* --- Correct Investment Panel Row Layout --- */
+
+/* This targets the <div> that wraps EACH label/input pair. */
+#investment-panel .inv-input-group>div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 8px;
+    /* Restores the space between rows */
+}
+
+/* Styles the text label. */
+#investment-panel .inv-input-group label {
+    width: 66.66%;
+    /* Default 2/3 width */
+    padding-right: 1rem;
+    /* Consistent spacing */
+    white-space: nowrap;
+    color: #555;
+    font-size: clamp(12px, 0.9vw, 14px);
+    /* Dynamic Font */
+}
+
+/* Styles ALL inputs and selects. */
+#investment-panel .inv-input-column input,
+#investment-panel .inv-input-column select {
+    width: 33.33%;
+    /* Default 1/3 width */
+    box-sizing: border-box;
+    padding: 3px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: right;
+    font-size: clamp(12px, 0.9vw, 14px);
+    /* Dynamic Font */
+}
+
+/* Exception for the MACRS row for a 50/50 split. */
+#investment-panel .inv-input-group div:has(#inv-macrsClass)>label {
+    width: 40%;
+}
+
+#investment-panel .inv-input-group div:has(#inv-macrsClass)>select {
+    width: 60%;
+}
+
+#investment-panel .inv-p50-display,
+#investment-panel .inv-ci-display {
+    font-size: clamp(12px, 0.9vw, 14px);
+    /* Dynamic Font */
+}
+
+#investment-panel .inv-p50-display span:last-child {
+    font-weight: bold;
+    color: #34495e;
+    padding: 6px;
+    font-size: clamp(12px, 0.9vw, 14px);
+}
+
+#investment-panel .inv-ci-display {
+    font-size: 12px;
+    text-align: right;
+    color: #34495e;
+    font-weight: bold;
+    padding: 4px 0;
+}
+
+#investment-panel .inv-divider {
+    border: none;
+    border-top: 1px dashed #ccc;
+    margin: 8px 0;
+}
+
+#investment-panel .inv-analysis-controls {
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+    background: var(--white);
+}
+
+#investment-panel .inv-button-group {
+    display: flex;
+    width: 100%;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+#investment-panel .inv-button-group button {
+    flex-grow: 1;
+    padding: 6px;
+    font-weight: bold;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    color: #555;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: clamp(12px, 0.9vw, 14px);
+    /* Dynamic Font */
+}
+
+#investment-panel .inv-button-group button.active {
+    background-color: var(--secondary2);
+    color: white;
+    border-color: var(--secondary2);
+}
+
+#investment-panel .inv-button-group button:not(.active):hover {
+    background-color: #e0e0e0;
+}
+
+#investment-panel #inv-results-display {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#investment-panel #inv-results-placeholder {
+    text-align: center;
+    padding: 50px 20px;
+    color: #666;
+}
+
+#investment-panel .inv-scorecard-container {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-around;
+    gap: 5px;
+    margin-bottom: 1px;
+}
+
+#investment-panel .inv-scorecard {
+    flex: 1;
+    text-align: center;
+    padding: 15px;
+    background: #ecf0f1;
+    border-radius: 8px;
+    border-bottom: 3px solid #bdc3c7;
+}
+
+#investment-panel .inv-scorecard-label {
+    color: var(--accent);
+    margin-bottom: 5px;
+    font-size: clamp(12px, 1vw, 14px);
+    /* Dynamic Font */
+}
+
+#investment-panel .inv-scorecard-value {
+    font-weight: bold;
+    color: var(--accent);
+    font-size: clamp(20px, 1.8vw, 26px);
+    /* Dynamic Font */
+}
+
+#investment-panel .inv-chart-container {
+    flex-grow: 1;
+    position: relative;
+}
+
+/* Busy state for investment results: subtle dim, keep layout visible to avoid flashing */
+#investment-panel .inv-results-column.inv-busy {
+    transition: background-color 0.12s ease;
+    background-color: rgba(255,255,255,0.02);
+    pointer-events: none;
+}
+
+#investment-panel .inv-axis text,
+#investment-panel .inv-axis .tick text {
+    font-weight: 700;
+}
+
+#investment-panel .inv-axis-label {
+    font-size: 14px;
+    font-weight: 700;
+    fill: var(--accent);
+}
+
+#investment-panel .inv-area {
+    fill-opacity: 0.2;
+}
+
+#investment-panel .inv-break-even {
+    stroke: var(--failure-color);
+    stroke-width: 6px;
+    stroke-dasharray: 6, 4;
+}
+
+#investment-panel .inv-line {
+    fill: none;
+}
+
+#investment-panel .inv-hitbox {
+    stroke-width: 20px;
+    fill: none;
+    stroke: transparent;
+    cursor: pointer;
+}
+
+.inv-calendar-button {
+    background-color: var(--secondary2);
+    color: var(--white);
+    border: 1px solid var(--accent);
+    padding: 5px 5px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 0.9em;
+    width: 100%;
+    text-align: right;
+}
+
+.inv-calendar-button:hover {
+    background-color: var(--secondary1);
+    color: var(--idle-color);
+    font-weight: bold;
+}
+
+/* --- New Modal --- */
+.inv-calendar-modal {
+    position: fixed;
+    /* Sits on top of everything */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none;
+    /* Hidden by default */
+    z-index: 1000;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.inv-calendar-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    max-width: 1100px;
+    /* 4-col layout */
+    height: 90vh;
+    max-height: 800px;
+    /* 3-row layout */
+    background-color: var(--page-bg);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.inv-calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    border-bottom: 1px solid var(--accent);
+    flex-shrink: 0;
+}
+
+.inv-calendar-header h4 {
+    margin: 10px 0;
+}
+
+.inv-calendar-header .close-btn {
+    background: none;
+    border: none;
+    color: var(--accent);
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+/* --- 3x4 Grid --- */
+.calendar-grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* 4 columns */
+    grid-template-rows: repeat(3, 1fr);
+    /* 3 rows */
+    gap: 10px;
+    overflow-y: auto;
+    /* Allow grid to scroll if content overflows, not individual months */
+    padding: 10px;
+    flex-grow: 1;
+}
+
+.calendar-month {
+    background-color: var(--accent);
+    border-radius: 4px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-month h5 {
+    text-align: center;
+    margin: 5px 0;
+    color: var(--idle-color);
+}
+
+.calendar-month table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8em;
+}
+
+.calendar-month th,
+.calendar-month td {
+    text-align: center;
+    padding: 3px;
+    width: 14.28%;
+    /* 1/7th */
+}
+
+.calendar-month th.day-header {
+    cursor: pointer;
+    border-radius: 2px;
+    font-size: 0.9em;
+    color: var(--secondary1);
+    font-weight: bold;
+}
+
+.calendar-month th.day-header:hover {
+    background-color: var(--secondary2);
+}
+
+.calendar-month td {
+    cursor: pointer;
+    border-radius: 50%;
+    height: 24px;
+    width: 24px;
+    line-height: 18px;
+    color: var(--idle-color);
+    font-weight: bold;
+}
+
+.calendar-month td:not(.not-current-month):hover {
+    background-color: var(--secondary1);
+}
+
+.calendar-month td.not-current-month {
+    color: var(--accent);
+    cursor: default;
+}
+
+.calendar-month td.holiday {
+    box-shadow: 0 0 0 1px var(--failure-color) inset;
+}
+
+.calendar-month td.working-day {
+    background-color: var(--primary);
+    color: var(--idle-color);
+    font-weight: bold;
+}
+
+.calendar-controls {
+    padding: 10px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    border-top: 1px solid var(--accent);
+    flex-shrink: 0;
+}
+
+.calendar-controls button {
+    background-color: var(--accent-color);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.calendar-controls button.apply-btn {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+/* ============================================= */
+/* == Location Tab (from location.js)         == */
+/* ============================================= */
+
+#location-panel .state-boundary {
+    fill: var(--accent);
+    stroke: var(--white);
+    stroke-width: 1px;
+}
+
+#location-panel .city-marker {
+    fill: var(--secondary2);
+    stroke: var(--white);
+    stroke-width: 1.5px;
+    cursor: pointer;
+    transition: fill 0.2s ease;
+}
+
+#location-panel .city-marker:hover {
+    fill: var(--primary);
+}
+
+#location-panel .connection-line-bg {
+    stroke: var(--secondary1);
+    opacity: 0.3;
+}
+
+#location-panel .connection-line {
+    stroke: var(--secondary1);
+}
+
+#location-panel #loc-arrowhead path {
+    stroke: var(--secondary1);
+    fill: var(--secondary1);
+}
+
+#location-panel .location-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: flex-start;
+    gap: 4px;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--idle-color);
+    box-sizing: border-box;
+}
+
+/* Ensure the foreignObject wrapper doesn't clip the control box shadow */
+.location-controls-wrapper {
+    overflow: visible;
+}
+
+#location-panel .location-controls .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 0 0 auto;
+    min-width: 70px;
+}
+
+#location-panel .location-controls .input-group #city-select {
+    height: 26px;
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+    margin-bottom: 0.2rem;
+}
+
+#location-panel .location-controls .input-with-unit {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#location-panel .location-controls label {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--accent);
+}
+
+#location-panel .location-controls input[type="number"] {
+    width: 80px;
+}
+
+#location-panel .location-controls .unit-label {
+    font-size: 0.85rem;
+    color: #555;
+    white-space: nowrap;
+}
+
+#location-panel .city-info-box {
+    display: none;
+}
+
+#location-panel .city-info-box div {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 12px;
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--idle-color);
+    font-size: 0.9rem;
+}
+
+#location-panel .city-info-box h4 {
+    margin: 0 0 8px 0;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #ccc;
+}
+
+#location-panel .city-info-box p {
+    margin: 4px 0;
+}
+
+#location-panel .city-info-box button {
+    width: 100%;
+    margin-top: 8px;
+    background-color: var(--failure-color);
+    color: var(--white);
+    border: none;
+}
+
+#location-panel .optimal-factory-marker {
+    fill: var(--secondary1);
+    stroke: var(--accent);
+    stroke-width: 1px;
+    pointer-events: none;
+}
+
+#location-panel .summary-panel {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 8px 10px;
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--idle-color);
+    font-size: 0.8rem;
+    justify-content: space-between;
+    display: flex;
+    gap: 3px;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+#location-panel .summary-panel h4 {
+    flex-shrink: 0;
+    text-align: center;
+    margin: 0;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #ccc;
+}
+
+#location-panel .summary-panel .inv-button-group {
+    display: flex;
+    width: 100%;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 0px;
+    display: flex;
+}
+
+#location-panel .summary-panel .inv-button-group button {
+    flex-grow: 1;
+    padding: 10px;
+    font-weight: bold;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    color: #555;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 0.8rem;
+    align-self: center;
+}
+
+#location-panel .summary-panel .inv-button-group button.active {
+    background-color: var(--secondary2);
+    color: white;
+    border-color: var(--secondary2);
+}
+
+#location-panel .summary-panel .inv-button-group button:not(.active):hover {
+    background-color: #e0e0e0;
+}
+
+/* Responsive adjustments to prevent clipping on narrow viewports */
+.summary-panel-wrapper {
+    overflow: visible; /* allow the foreignObject to expand within the SVG area */
+}
+
+.legend-panel-wrapper {
+    overflow: visible;
+}
+
+#location-panel .summary-panel {
+    min-width: 120px; /* ensure the panel has a usable minimum */
+    max-width: 100%;
+}
+
+#location-panel .legend-panel {
+    min-width: 120px;
+    max-width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--idle-color);
+    background-color: var(--white);
+    font-size: 0.9rem;
+}
+
+#location-panel .legend-panel h4 {
+    margin: 0 0 8px 0;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #ccc;
+    font-size: 1rem;
+    text-align: center;
+    color: var(--primary);
+}
+
+#location-panel .legend-panel svg {
+    display: block;
+    margin: 0 auto;
+}
+
+#location-panel .legend-panel .legend-text {
+    text-align: center;
+    font-size: 11px;
+    color: var(--accent);
+    margin-top: 5px;
+}
+
+#location-panel .summary-panel .summary-row {
+    word-wrap: break-word;
+}
+
+/* If the summary contents exceed vertical space, allow internal scrolling without breaking layout */
+#location-panel .summary-panel .summary-row-area,
+#location-panel .summary-panel {
+    overflow: auto;
+}
+
+@media (max-width: 800px) {
+    /* On small screens, reduce margins and allow controls/summary to stack */
+    #location-panel .location-controls {
+        padding: 8px;
+        gap: 6px;
+    }
+
+    /* Make summary panel more compact */
+    #location-panel .summary-panel h4 {
+        font-size: 0.95rem;
+    }
+
+    /* Ensure the summary panel's foreignObject doesn't get a negative width from layout computations */
+    .summary-panel-wrapper[width="NaN"] {
+        width: 140px;
+    }
+}
+
+#location-panel .location-controls select {
+    min-width: 120px;
+    width: 100%;
+    flex-grow: 1;
+}
+
+#location-panel .location-controls .input-group:first-child {
+    flex: 1 1 120px;
+    min-width: 120px;
+}
+
+#location-panel .location-controls input[type="number"] {
+    width: 100%;
+    min-width: 100%;
+    padding: 6px 8px;
+    font-size: 0.85rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: var(--white);
+    height: auto;
+    box-sizing: border-box;
+}
+
+#location-panel .location-controls input[type="number"] {
+    width: 80px;
+}
+
+#location-panel .location-controls .loc-control-btn {
+    flex-shrink: 0;
+    flex-grow: 0;
+    height: 35px;
+    min-width: 80px;
+    align-self: center;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding: 6px 12px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    border: 1px solid var(--primary);
+    background-color: var(--primary);
+    color: var(--white);
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+    border-radius: 4px;
+}
+
+#location-panel .location-controls .loc-control-btn:hover {
+    background-color: var(--secondary1);
+    border-color: var(--secondary1);
+}
+
+#location-panel .location-controls .input-group:nth-child(2),
+#location-panel .location-controls .input-group:nth-child(3) {
+    flex: 0 0 80px;
+    min-width: 80px;
+}
+
+#location-panel .location-controls .remove-all-btn {
+    background-color: var(--secondary2);
+    border-color: var(--secondary2);
+}
+
+#location-panel .location-controls .remove-all-btn:hover {
+    background-color: var(--secondary1);
+    border-color: var(--secondary1);
+}
+
+.bottom-ribbon-bar {
+    transition: height 0.3s ease-in-out, 0.3s ease-in-out;
+    border-top: 1px solid var(--border-color, #444);
+    background-color: var(--white);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.bottom-ribbon-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    color: var(--text-color);
+    background-color: var(--white);
+}
+
+.ribbon-export-btn {
+    position: absolute;
+    right: 10px;
+    top:50%;
+    transform: translateY(-50%);
+    background-color: var(--secondary2);
+    color: var(--white);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+.ribbon-export-btn:hover {
+    background-color: var(--secondary1);
+    border-color: var(--white);
+}
+
+.bottom-ribbon-header {
+    height: 30px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: var(--header-bg);
+    color: var(--white);
+    border-bottom: 1px solid var(--border-color, #444);
+    position: relative;
+}
+
+.bottom-ribbon-header:hover {
+    background-color: #4a5a64;
+}
+
+.bottom-ribbon-header-title {
+    font-size: 0.9em;
+    font-weight: bold;
+    flex-grow: 0;
+    text-align: center;
+}
+
+.bottom-ribbon-header-title strong {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+.bottom-ribbon-header-arrow {
+    font-size: 0.8em;
+    margin-left: 10px;
+}
+
+.bottom-ribbon-content {
+    flex-grow: 1;
+    display: none;
+    flex-direction: row;
+    justify-content: space-between;
+    overflow: hidden;
+    padding: 10px;
+    gap: 10px;
+    background-color: var(--page-bg);
+}
+
+.ribbon-cost-inputs {
+    width: 220px;
+    flex-shrink: 0;
+    padding: 10px;
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--idle-color);
+    font-size: 0.9rem;
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.ribbon-cost-inputs h4 {
+    margin: 0 0 8px 0;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #ccc;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.ribbon-cost-inputs .user-input-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    gap: 8px;
+}
+
+.ribbon-cost-inputs .user-input-row label {
+    flex-shrink: 1;
+    white-space: nowrap;
+    text-align: left;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--accent);
+}
+
+.ribbon-cost-inputs .user-input-row input[type="number"] {
+    flex-grow: 1;
+    min-width: 60px;
+    width: auto;
+    padding: 6px 8px;
+    font-size: 0.85rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: var(--white);
+    box-sizing: border-box;
+    text-align: right;
+}
+
+.ribbon-cost-inputs .user-input-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.ribbon-cost-inputs .loc-control-btn {
+    padding: 6px 12px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    border: 1px solid var(--primary);
+    background-color: var(--primary);
+    color: var(--white);
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.ribbon-cost-inputs .loc-control-btn:hover {
+    background-color: var(--secondary1);
+    border-color: var(--secondary1);
+}
+
+.ribbon-chart-area {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-width: 200px;
+    border: 1px solid var(--idle-color);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    padding: 5px;
+}
+
+#holding-cost-svg-container {
+    flex-grow: 1;
+    min-height: 100px;
+    width: 100%;
+    height: 100%;
+}
+
+#holding-cost-chart-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+#holding-cost-chart-svg .axis text,
+#holding-cost-chart-svg .axis-label {
+    font-size: 10px;
+    fill: var(--accent);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+#holding-cost-chart-svg .axis .tick text {
+    font-size: 12px;
+}
+
+#holding-cost-chart-svg .axis-label {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#holding-cost-chart-svg .axis path,
+#holding-cost-chart-svg .axis line {
+    stroke: var(--accent);
+    stroke-width: 1px;
+}
+
+#holding-cost-chart-svg .holding-cost-area {
+    fill: var(--secondary2);
+    opacity: 0.8;
+}
+
+.ribbon-demand-panel {
+    width: 220px;
+    flex-shrink: 0;
+    padding: 10px;
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--idle-color);
+    font-size: 0.9rem;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.ribbon-demand-panel h4 {
+    margin: 0 0 8px 12px;
+    padding-bottom: 1px;
+    border-bottom: 1px solid #ccc;
+    font-size: 1rem;
+    text-align: center;
+    color: var(--primary);
+}
+
+.ribbon-demand-panel .demand-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1px;
+}
+
+.ribbon-demand-panel .demand-row span:first-child {
+    font-weight: bold;
+}
+
+.ribbon-demand-panel .demand-bar-container {
+    width: 100%;
+    height: 1rem;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    margin-top: 4px;
+    overflow: hidden;
+    align-content: baseline;
+}
+
+.ribbon-demand-panel .demand-bar {
+    height: 100%;
+    background-color: var(--primary);
+    width: 0%;
+    transition: width 0.5s ease-in-out;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    line-height: 0.9rem;
+    text-anchor: middle;
+}
+
+.ribbon-cost-inputs .inv-button-group {
+    display: flex;
+    width: 100%;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.ribbon-cost-inputs .inv-button-group button {
+    flex-grow: 1;
+    width: 50%;
+    padding: 6px;
+    font-weight: bold;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    color: #555;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 0.8rem;
+}
+
+.ribbon-cost-inputs .inv-button-group button.active {
+    background-color: var(--secondary2);
+    color: white;
+    border-color: var(--secondary2);
+}
+
+.ribbon-cost-inputs .inv-button-group button:not(.active):hover {
+    background-color: #e0e0e0;
+}
+
+#ppi-chart-modal {
+    z-index: 1000;
+}
+
+#ppi-chart-modal .ppi-modal-content {
+    width: 100%;
+    height: 100%;
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--idle-color);
+    padding: 15px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+#ppi-chart-modal h4 {
+    text-align: center;
+    margin-bottom: 10px;
+    color: var(--accent);
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+#ppi-chart-modal .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+}
+
+#ppi-chart-modal .close-btn:hover {
+    color: var(--accent);
+}
+
+#ppi-chart-svg {
+    display: block;
+    flex-grow: 1;
+    width: 100%;
+}
+
+#ppi-chart-svg .axis text,
+#ppi-chart-svg .axis-label {
+    font-size: 10px;
+    fill: var(--accent);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+#ppi-chart-svg .axis-label {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#ppi-chart-svg .axis path,
+#ppi-chart-svg .axis line {
+    stroke: var(--accent);
+    stroke-width: 1px;
+}
+
+#ppi-chart-svg .ppi-line {
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 2;
+}
+
+#ppi-chart-svg .ppi-loading-text {
+    font-size: 16px;
+    fill: var(--accent);
+    text-anchor: middle;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+#location-panel .ppi-line {
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 2px;
+}
+
+#location-panel .ppi-focus {
+    display: none;
+}
+
+#location-panel .ppi-focus-circle {
+    fill: var(--secondary2);
+    stroke: var(--white);
+    stroke-width: 1.5px;
+}
+
+#location-panel .ppi-overlay {
+    fill: none;
+    pointer-events: all;
+    cursor: crosshair;
+}
+
+#location-panel .ppi-loading-text {
+    font-size: 14px;
+    fill: var(--accent);
+    text-anchor: middle;
+}
+
+.sim-loading-text {
+    color: var(--accent);
+    font-weight: bold;
+    margin: 0;
+    padding: 2px 0;
+}
+
+.sim-placeholder-text {
+    margin: 0;
+    padding: 2px 0;
+}
+
+.sim-error-text {
+    color: var(--failure-color);
+    font-weight: bold;
+}
+
+.overlay {
+    fill: none;
+    pointer-events: all;
+}
+
+.chart-error-message {
+    color: var(--failure-color);
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    padding: 10px;
+    border: 2px solid var(--failure-color);
+    background-color: rgba(255, 200, 200, 0.95);
+    max-height: 100%;
+    overflow-y: auto;
+}
+
+#shipment-qty {
+    width: 56px;
+}
+
+#shipment-freq {
+    width: 48px;
+}
+
+#location-panel .ribbon-demand-panel .demand-row,
+#location-panel .summary-panel .summary-row {
+    display: flex;
+    flex-shrink: 0;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2px;
+    padding: 1px 0;
+}
+
+#location-panel .ribbon-demand-panel .filter-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2px;
+    padding: 1px 0;
+}
+
+#location-panel .ribbon-demand-panel .filter-row label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    text-align: left;
+    padding-right: 5px;
+    color: var(--accent);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#location-panel .ribbon-demand-panel .filer-row strong {
+    text-align: right;
+    font-weight: bold;
+}
+
+.brush .selection {
+    fill: var(--secondary2);
+    fill-opacity: 0.3;
+}
+
+#location-panel .summary-panel .summary-row.summary-total {
+    font-weight: bold;
+    border-top: 1px solid var(--border-color, #ccc);
+    margin-top: 1px;
+    padding-top: 1px;
+}
+
+#location-panel .summary-panel .summary-row span:first-child {
+    text-align: left;
+    padding-right: 5px;
+    color: var(--accent);
+    font-weight: 500;
+}
+
+#location-panel .ribbon-demand-panel .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1px;
+}
+
+#location-panel .ribbon-demand-panel .summary-row span:first-child {
+    text-align: left;
+    padding-right: 5px;
+    color: var(--accent);
+    font-weight: bold;
+}
+
+#location-panel .ribbon-demand-panel .demand-row span:first-child {
+    font-weight: bold;
+}
+
+#location-panel .ribbon-demand-panel .demand-row span:last-child,
+#location-panel .summary-panel .summary-row span:last-child {
+    text-align: right;
+    font-weight: bold;
+}
+
+#location-panel .summary-panel .summary-row span:first-child {
+    font-weight: 500;
+}
+
+#location-panel .summary-panel .summary-row-area {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+/* Save & Compare Styles */
+#saveConfigBtn {
+    width: 100%;
+    padding: 0.5rem;
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+#saveConfigBtn:hover {
+    background-color: var(--accent);
+}
+
+#compareBtn {
+    width: 100%;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+#compareBtn.current {
+    background-color: var(--secondary1);
+    color: var(--accent);
+}
+
+#compareBtn.saved {
+    background-color: var(--secondary2);
+    color: var(--white);
+}
+
+#save-compare-section {
+    margin-top: 1rem;
+}
+
+#compare-tabs {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.compare-tab-btn {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid var(--accent);
+    background-color: var(--white);
+    color: var(--accent);
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.compare-tab-btn.active {
+    background-color: var(--accent);
+    color: var(--white);
+}
+
+.compare-tab-btn:first-child {
+    border-radius: 4px 0 0 4px;
+}
+
+.compare-tab-btn:last-child {
+    border-radius: 0 4px 4px 0;
+}
+
+#savedConfigPreview h5 {
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+}
+
+#savedConfigPreview p {
+    margin: 0.25rem 0;
+    font-size: 0.85rem;
+}
+
+#savedWorkstationPreview {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+}

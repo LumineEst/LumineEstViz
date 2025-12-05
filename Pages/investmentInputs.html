@@ -1,0 +1,85 @@
+<div class="inv-input-group">
+    <div class="inv-group-header">Project & Fixed Costs</div>
+    <div>
+        <label for="inv-analysisPeriod">Analysis Period (Yrs):</label>
+        <input type="number" id="inv-analysisPeriod" step="1" min="1" max="30">
+    </div>
+    <div>
+        <label for="inv-marr">MARR / Discount Rate (%):</label>
+        <input type="number" id="inv-marr" step="0.1" min="0">
+    </div>
+    <div>
+        <label for="inv-taxRate">Corporate Tax Rate (%):</label>
+        <input type="number" id="inv-taxRate" step="0.1" min="0" max="100">
+    </div>
+    <div>
+        <label for="inv-workingDays">Working Days per Year:</label>
+        <input type="number" id="inv-workingDays" step="1" min="1" max="365">
+    </div>
+    <div>
+        <label for="inv-mfgOverhead">Mfg. Overhead ($/yr):</label>
+        <input type="text" data-type="currency" id="inv-mfgOverhead">
+    </div>
+    <div>
+        <label for="inv-freightExpense">Freight Expense ($/yr):</label>
+        <input type="text" data-type="currency" id="inv-freightExpense">
+    </div>
+    <div>
+        <label for="inv-sgaExpenses">SG&A Expenses ($/yr):</label>
+        <input type="text" data-type="currency" id="inv-sgaExpenses">
+    </div>
+</div>
+
+<div class="inv-input-group">
+    <div class="inv-group-header">Capital Investment</div>
+    <div>
+        <label for="inv-costPerFootStraight">Cost / ft of Straights ($):</label>
+        <input type="text" data-type="currency" id="inv-costPerFootStraight">
+    </div>
+    <div>
+        <label for="inv-costPerBend">Cost / Conveyor Bend ($):</label>
+        <input type="text" data-type="currency" id="inv-costPerBend">
+    </div>
+    <div>
+        <label for="inv-installationCost">Installation Cost ($):</label>
+        <input type="text" data-type="currency" id="inv-installationCost">
+    </div>
+    <div>
+        <label for="inv-salvageValue">Salvage Value ($):</label>
+        <input type="text" data-type="currency" id="inv-salvageValue">
+    </div>
+</div>
+
+<div class="inv-input-group">
+    <div class="inv-group-header">Probabilistic Demand Scenarios
+    </div>
+    <div>
+        <label for="inv-std">Std. Deviation (STD):</label>
+        <input type="text" data-type="currency" id="inv-std">
+    </div>
+    <div>
+        <label for="inv-cv">Coeff. of Variation (CV %):</label>
+        <input type="number" id="inv-cv" step="0.1" min="0">
+    </div>
+    <div>
+        <label for="inv-ciLevel">Confidence Interval:</label>
+        <select id="inv-ciLevel">
+            <option value="90">90%</option>
+            <option value="95" selected>95%</option>
+            <option value="99">99%</option>
+        </select>
+    </div>
+    <hr class="inv-divider">
+    <div>
+        <label for="inv-p10Demand">P10 (Conservative):</label>
+        <input type="text" data-type="currency" id="inv-p10Demand">
+    </div>
+    <div class="inv-p50-display">
+        <span>P50 (Expected Value):</span>
+        <span id="inv-p50Demand"></span>
+    </div>
+    <div>
+        <label for="inv-p90Demand">P90 (Optimistic):</label>
+        <input type="text" data-type="currency" id="inv-p90Demand">
+    </div>
+</div>

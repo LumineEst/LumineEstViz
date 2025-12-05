@@ -1,0 +1,318 @@
+<h2>Factory Flow to Fortune - Mastering the Mixed-Model Assembly Line</h2>
+<section class="overview-section overview-intro">
+    <p class="overview-desc">
+        You have been tasked with designing a new mixed-assembly line to take on a new contract for
+        a product line of refrigerators. How many people will you need to hire? What conveyor supplies do you need to
+        purchase? How many Refrigerators should you aim to build each day? Can you meet the contracted Demand? How much
+        do you need to charge for each Model?
+    </p>
+    <h2><strong>Where Do You Even Start?</strong></h2>
+    <div class="video-container">
+        <video controls poster="Pages/VidThumb.jpg">
+            <source src="Pages/intro.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</section>
+
+<section class="overview-section" style="background-color: #f0f7ff; border-left: 5px solid var(--accent); padding: 15px;">
+    <h3>Custom Configuration</h3>
+    <p>
+        Want to simulate a different manufacturing process? Click the button below to open the Configuration Editor.
+        You can define your own <strong>Models</strong> (dimensions, weights, build ratios) and <strong>Work Elements</strong> (task times, precedence).
+        The system will automatically optimize the line balance for your specific data.
+    </p>
+    <div style="display: flex; justify-content: center; margin-top: 15px;">
+        <button id="overview-load-config-btn" class="action-btn" style="font-size: 1.1rem; padding: 10px 25px;">Load Configuration</button>
+    </div>
+</section>
+
+<section class="overview-section">
+    <h3>The Problem Space & Constraints</h3>
+    <p>The simulation is built on a defined scenario with foundational rules that cannot be altered:</p>
+    <ul>
+        <li>
+            <strong>Product Mix</strong> – A fixed production ratio of three refrigerator models: 35% Super, 45% Ultra,
+            and 20% Mega. Each has a different financial profile and different required tasks.
+        </li>
+        <li>
+            <strong>Work Elements</strong> – 31 indivisible assembly tasks, each with a specific labor and machine time
+            requirement. They form a constraint in how well you can balance tasks between employees.
+        </li>
+        <li>
+            <strong>Precedence Constraints</strong> – The strict, non-negotiable sequence in which tasks must be
+            performed. Violating these rules results in an invalid, impossible, or low-quality production.
+        </li>
+        <li>
+            <strong>Workstations</strong> – A series of 3 to 13 stations, operated by one employee each, to which all
+            work elements must be assigned. Due to the Work Elements, more than 13 stations cannot meet a higher demand.
+        </li>
+        <li>
+            <strong>Factory Physics</strong> – The system is governed by a fixed assembly line length of 486 feet, which
+            directly impacts throughput calculations. This is based on ensuring the smallest elements have enough space.
+        </li>
+        <li>
+            <strong>Shipping Cube-Out</strong> – Due to having a fixed Build Ratio, shipments are assumed to also follow
+            this ratio of models, with the volume of all shipments being based on a 53' trailer which is loaded with an
+            assumed density and packing cube-out distribution which is shown in Backend Mechanics below.
+        </li>
+    </ul>
+</section>
+
+<section class="overview-section">
+    <h3>Core Operational and Financial Inputs</h3>
+    <p>These are the variables you can adjust to define your production and test different strategies:</p>
+    <ul>
+        <li>
+            <strong>Workstations:</strong> The number of employees on the line, which determines how the work
+            elements can be distributed.
+        </li>
+        <li>
+            <strong>Task Assignment:</strong> Drag and drop elements between workstations (in the left sidebar) to
+            change Balance and Cycle Time. This is the primary way you will manually balance your assembly line.
+        </li>
+        <li>
+            <strong>Daily Demand:</strong> The number of units you must produce per day, which influences Takt Time.
+        </li>
+        <li>
+            <strong>Operating Hours:</strong> The available production time for a shift. Driving labor costs and
+            Takt Time.
+        </li>
+        <li>
+            <strong>Financial Inputs:</strong> Key cost and price parameters, including labor rate, material costs, and
+            selling price for each model.
+        </li>
+        <li>
+            <strong>Quality Yield:</strong> The percentage of built products which are built correctly, influenced by many
+            employee stresses.  This directly impacts
+            <strong data-tooltip="Cost of Poor Quality. Calculated from Operational conditions between Workstations, Factory Location, Rework and Labor Costs, and Build Schedule.">
+                CoPQ
+            </strong>, based on the average cost of rework by model.
+        </li>
+        <li>
+            <strong>Investment Factors:</strong> Many other variables must be accounted for to determine the long-term
+            value of the assembly line, these are self-contained within the Investment and Location tabs.
+        </li>
+        <li>
+            <strong>Location and Shipping:</strong> The choice of where to place the factory in order to meet a specific shipping schedule.
+            This involves balancing many variables across all tabs, in order to select a schedule and location which maximizes profit while meeting distribution demand.
+        </li>
+    </ul>
+</section>
+
+<section class="overview-section">
+    <h3>Understanding the Tabs</h3>
+    <p>
+        Each tab provides a unique lens for analyzing your line, moving from physical behaviors to financial outcomes.
+        Tooltips are used to help clarify terminologies. The three different color groups build on each other, with a growing complexity from left to right.<br>
+        &nbsp;&nbsp;&nbsp;&nbsp; – <strong style="color: #eba21b; text-shadow: -0.5px -0.5px 0 rgba(0, 0, 0, 0.3), 0.5px -0.5px 0 rgba(0, 0, 0, 0.3), -0.5px 0.5px 0 rgba(0, 0, 0, 0.3), 0.5px 0.5px 0 rgba(0, 0, 0, 0.3);">Yellow</strong> tabs clarify core immutable aspects of the assembly process.<br>
+        &nbsp;&nbsp;&nbsp;&nbsp; – <strong style="color: #009688; text-shadow: -0.5px -0.5px 0 rgba(0, 0, 0, 0.3), 0.5px -0.5px 0 rgba(0, 0, 0, 0.3), -0.5px 0.5px 0 rgba(0, 0, 0, 0.3), 0.5px 0.5px 0 rgba(0, 0, 0, 0.3);">Green</strong> tabs explore operational behaviors of the assembly line.<br>
+        &nbsp;&nbsp;&nbsp;&nbsp; – <strong style="color: #7E57C2; text-shadow: -0.5px -0.5px 0 rgba(0, 0, 0, 0.3), 0.5px -0.5px 0 rgba(0, 0, 0, 0.3), -0.5px 0.5px 0 rgba(0, 0, 0, 0.3), 0.5px 0.5px 0 rgba(0, 0, 0, 0.3);">Purple</strong> tabs explore financial factors and outcomes of the assembly line.<br>
+    </p>
+    <ul>
+        <li>
+            <strong style="color: #eba21b; text-shadow: -0.5px -0.5px 0 rgba(0, 0, 0, 0.3), 0.5px -0.5px 0 rgba(0, 0, 0, 0.3), -0.5px 0.5px 0 rgba(0, 0, 0, 0.3), 0.5px 0.5px 0 rgba(0, 0, 0, 0.3);">Precedence</strong> – Visualizes the "hard logic" of the assembly process. This network diagram
+            shows which tasks must be completed before others can begin. Violating this logic will be flagged, as it
+            creates a physically impossible sequence which leads to poor quality.
+        </li>
+        <li>
+            <strong style="color: #009688; text-shadow: -0.5px -0.5px 0 rgba(0, 0, 0, 0.3), 0.5px -0.5px 0 rgba(0, 0, 0, 0.3), -0.5px 0.5px 0 rgba(0, 0, 0, 0.3), 0.5px 0.5px 0 rgba(0, 0, 0, 0.3);">Schedule</strong> – A dynamic Gantt chart that visualizes the production plan over time. It tracks
+            the progress of each unit through every task, showing the cascading consequences of delays at the bottleneck
+            station. It provides a visual way to understand when employees will have work within their station.
+        </li>
+        <li>
+            <strong style="color: #009688; text-shadow: -0.5px -0.5px 0 rgba(0, 0, 0, 0.3), 0.5px -0.5px 0 rgba(0, 0, 0, 0.3), -0.5px 0.5px 0 rgba(0, 0, 0, 0.3), 0.5px 0.5px 0 rgba(0, 0, 0, 0.3);">Efficiency</strong> – The primary dashboard for your line's performance. It provides a
+            workstation-by-workstation breakdown of productive time vs. idle time, highlighting the bottleneck and
+            quantifying the overall Balance Loss.
+        </li>
+        <li>
+            <strong style="color: #009688; text-shadow: -0.5px -0.5px 0 rgba(0, 0, 0, 0.3), 0.5px -0.5px 0 rgba(0, 0, 0, 0.3), -0.5px 0.5px 0 rgba(0, 0, 0, 0.3), 0.5px 0.5px 0 rgba(0, 0, 0, 0.3);">Layout</strong> – Simulates the physical U-shaped factory floor. This view animates product flow,
+            allowing you to visually identify where bottlenecks and idleness occurs in your current
+            configuration. It also visualizes how space is used, WIP, and the ideal build sequence of models.
+        </li>
+        <li>
+            <strong style="color: #7E57C2; text-shadow: -0.5px -0.5px 0 rgba(0, 0, 0, 0.3), 0.5px -0.5px 0 rgba(0, 0, 0, 0.3), -0.5px 0.5px 0 rgba(0, 0, 0, 0.3), 0.5px 0.5px 0 rgba(0, 0, 0, 0.3);">Profit</strong> – Translates operational efficiency into financial results. This tab uses your
+            line's throughput to calculate the Daily Gross Profit and Gross Profit Margin, directly connecting your
+            design choices to the bottom line. It allows you to evaluate product pricing and material costs.
+        </li>
+        <li>
+            <strong style="color: #7E57C2; text-shadow: -0.5px -0.5px 0 rgba(0, 0, 0, 0.3), 0.5px -0.5px 0 rgba(0, 0, 0, 0.3), -0.5px 0.5px 0 rgba(0, 0, 0, 0.3), 0.5px 0.5px 0 rgba(0, 0, 0, 0.3);">Location</strong> – A logistics and location planning tool to determine the optimal location in the
+            United States to minimize shipping costs between the new Factory and Existing Distribution Hubs. Optimize
+            your Shipment allocations to balance meeting Demands and minimizing Inventory Holding Costs.
+        </li>
+        <li>
+            <strong style="color: #7E57C2; text-shadow: -0.5px -0.5px 0 rgba(0, 0, 0, 0.3), 0.5px -0.5px 0 rgba(0, 0, 0, 0.3), -0.5px 0.5px 0 rgba(0, 0, 0, 0.3), 0.5px 0.5px 0 rgba(0, 0, 0, 0.3);">Investment</strong> – A strategic planning tool for long-term analysis. It evaluates the financial
+            viability of your current line (Base Case) or a re-optimized one (Expansion Case) against uncertain future
+            demand using P10, P50, and P90 forecasts and standard financial metrics like NPV and IRR.
+        </li>
+    </ul>
+</section>
+
+<section class="overview-section">
+    <h3>Key Principles & Terms</h3>
+    <p>
+        These core manufacturing metrics are calculated in real-time to diagnose the health of your assembly line
+        design:
+    </p>
+    <ul>
+        <li>
+            <strong data-tooltip="The required pace of production to meet customer demand. Calculated from Daily Demand and Operating Hours.">
+                Takt
+                Time
+            </strong> – The "heartbeat" of the factory. It's the pace your line *must* maintain to meet
+            customer demand, calculated from your Daily Demand and Operating Hours.
+        </li>
+        <li>
+            <strong data-tooltip="The actual time it takes for one unit to be completed at the slowest workstation. This determines your line's true output.">
+                Cycle
+                Time
+            </strong> – The actual speed of your line, determining your total Throughput. It is
+            determined by the total labor time of the slowest workstation, which is the line's <strong data-tooltip="The single process or workstation that limits the overall output of the entire system.">bottleneck</strong>.
+            To meet
+            demand, your Cycle Time must be less than or equal to Takt Time.
+        </li>
+        <li>
+            <strong data-tooltip="Unproductive time within a workstation where an operator is waiting for the next unit because their assigned tasks are finished.">
+                Idle
+                Time
+            </strong> – Unproductive time within a workstation's cycle. It represents paid time where
+            an operator is waiting for the next unit because their assigned tasks are completed faster than the
+            bottleneck station. This directly reduces the profitability of your line.
+        </li>
+        <li>
+            <strong data-tooltip="A percentage that quantifies the total inefficiency from an unequal workload distribution across all workstations.">
+                Balance
+                Loss
+            </strong> – A percentage that quantifies the total inefficiency of the line. It
+            aggregates the idle time across all workstations, measuring the waste from an imperfect workload balance. A
+            lower score is better. Poor Balance causes Idle time and employee dissatistfaction
+        </li>
+        <li>
+            <strong>Gross Profit</strong> – This is the profit that your products generate before factory expenses are
+            considered, calculated as "Sales" - "Labor" - "Materials". For your factory to succeed, you must generate
+            enough profit to cover your other expenses.
+        </li>
+        <li>
+            <strong>Element vs Labor Time</strong> – In a mixed assembly line, where different models have different
+            tasks required, the Element time a task takes to complete will impact how much conveyor space it needs;
+            however, the balancing of tasks should use the average labor time throughout the day.
+        </li>
+        <li>
+            <strong>Conveyor Layout</strong> – To minimize wasted movement from employees in the workstations between
+            the beginning and end of their workstations, as well as to improve communication within the team, the use of
+            U-Shaped workstations is preferrable in laying out the assembly line's configuration.
+        </li>
+        <li>
+            <strong>WIP & Held Inventory</strong> – Holding Inventory in your factory ties up capital which could be
+            better invested, carries administrative costs like taxes and insurance, requires excess storage and
+            handling, as well as deterioration, shrinkage, and obsolescence risks.
+        </li>
+        <li>
+            <strong>CoPQ & SRR</strong> – The Cost of Poor Quality is influenced by SRR (Scrap, Rework, Repair) of units
+            which were built incorrectly.  This is caused by overworkage, insufficient buffer time to cope with variance,
+            and non-competitive wages.
+        </li>
+    </ul>
+</section>
+
+<section class="overview-section">
+    <h3>Optimization Tips</h3>
+    <p>
+        A successful configuration achieves a smooth production flow by minimizing idle time and eliminating
+        bottlenecks,
+        all while strictly adhering to the required precedence constraints and meeting customer demand.
+    </p>
+    <div class="tips-list">
+        <div class="tip-item">
+            <span class="tip-icon">??</span>
+            <div class="step-content">
+                <strong>Balance the Workload</strong> – Aim for an equal amount of total labor time at each workstation,
+                reducing idle time and Balance Loss.
+            </div>
+        </div>
+        <div class="tip-item">
+            <span class="tip-icon">??</span>
+            <div class="step-content">
+                <strong>Respect Precedence</strong> – Ensure assembly steps follow build-sequence requirements, a task's
+                predecessors must always finish first.
+            </div>
+        </div>
+        <div class="tip-item">
+            <span class="tip-icon">??</span>
+            <div class="step-content">
+                <strong>Focus on the Bottleneck</strong> – To improve throughput, shift work from the most-utilized
+                station to other less-utilized stations.
+            </div>
+        </div>
+        <div class="tip-item">
+            <span class="tip-icon">??</span>
+            <div class="step-content">
+                <strong>Meet Demand</strong> – Your line's Cycle Time must be less than or equal to the Takt Time. If
+                not, you will fail to meet customer orders.
+            </div>
+        </div>
+        <div class="tip-item">
+            <span class="tip-icon">??</span>
+            <div class="step-content">
+                <strong>Drive Profitability</strong> – Your line needs to generate enough profit to cover your expenses
+                and meet
+                your Minimum Acceptable Rate of Return (MARR).
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="overview-section">
+    <h3>Getting Started Guide</h3>
+    <p>
+        Your objective is to assign the work elements to design a stable, efficient, and profitable system. Follow these
+        steps to optimize your assembly line:
+    </p>
+    <div class="step-list">
+        <div class="step-item">
+            <span class="step-number">1</span>
+            <div class="step-content">
+                <strong>Set Parameters</strong> – Adjust demand, staffing, and operational settings in the right sidebar
+            </div>
+        </div>
+        <div class="step-item">
+            <span class="step-number">2</span>
+            <div class="step-content">
+                <strong>Arrange Tasks</strong> – Drag assembly elements between workstations in the left sidebar to
+                balance the line
+            </div>
+        </div>
+        <div class="step-item">
+            <span class="step-number">3</span>
+            <div class="step-content">
+                <strong>Analyze Results</strong> – Monitor efficiency metrics and identify bottlenecks, while ensuring
+                objectives are met
+            </div>
+        </div>
+        <div class="step-item">
+            <span class="step-number">4</span>
+            <div class="step-content">
+                <strong>Explore Views</strong> – Switch between tabs to visualize different aspects of your line, using
+                tooltips to clarify key-terms
+            </div>
+        </div>
+        <div class="step-item">
+            <span class="step-number">5</span>
+            <div class="step-content">
+                <strong>Understand Your Customers</strong> – Adjust your Pricing, Location, & Shipping Strategy to
+                ensure
+                Profitability while meeting Demand
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="overview-section overview-intro">
+    <h2 style="text-align: center;">Technical Documentation</h2>
+    <p style="text-align: center;">For a detailed breakdown of the mathematical formulas and algorithms powering this simulation, please click "View Backend Mechanics".</p>
+    <div class="button-container" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 0.2rem;">
+        <a href="Pages/backend.html" class="tech-doc-link" target="_blank">View Backend Mechanics</a>
+        <a href="Pages/readme_viewer.html" class="tech-doc-link" target="_blank">Code Architecture ReadMe</a>
+    </div>
+
+</section>
